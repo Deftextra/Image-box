@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Image_box.Models.ImageProcessing;
 using Microsoft.AspNetCore.Http;
@@ -48,6 +47,7 @@ namespace Image_box.Controllers
             }
             catch(Exception e)
             {
+                _logger.LogError(e.Message);
                 return StatusCode(StatusCodes.Status500InternalServerError);
             }
 

@@ -34,7 +34,7 @@
             <ngb-progressbar [value]="uploadFile.uploadProgress" 
             [showValue]="!uploadFile.isUploaded"
             > 
-                {{ uploadFile.isUploaded ? "Completed!" : ""}}
+                {{ uploadMessage }}
             </ngb-progressbar>
         </div>
         <div class="text-center delete-icon col-md-1 px-0">

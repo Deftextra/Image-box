@@ -18,6 +18,7 @@ export class ImageUploadComponent implements OnInit {
 
   selectedFiles: FileUpload[] = [];
   imageFilesPasted: boolean = false;
+  uploadMessage: string
 
   public onFileSelected(files: FileList) {
     console.log(files);
@@ -39,20 +40,22 @@ export class ImageUploadComponent implements OnInit {
 
   public onUpload() {
 
+
     this.imageDataService.upload(this.selectedFiles)
     .subscribe((event) => {
       if (event.type === HttpEventType.UploadProgress) {
-        // Upload progress
-        // 100% means that all data has been send, but api will not neccessarily return
-        // immediately.
-        // TODO: Show "Creating image message" if upload reached 100%.
         this.setFilesUploadProgress(Math.round(event.loaded/event.total*100));
-        console.log(event.loaded);
-        console.log(event.total);
+
+        for (const image of this.selectedFiles) {
+          if (image.uploadProgress ==  100) {
+            this.setFilesAsUpload();
+            this.uploadMessage = "Compressing file!"
+          }
+        }
 
       } else if (event.type === HttpEventType.Response) {
         // Image succefully created (API returned)
-        this.setFilesAsUpload();
+        this.uploadMessage = "Compeleted!"
       }
     });
   }

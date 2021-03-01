@@ -14,7 +14,10 @@ export class ImageDataService {
    let fd = new FormData();
 
    for (const image of images) {
-     fd.append('images', image.file, image.file.name);
+     if (!image.isUploaded)
+     {
+      fd.append('images', image.file, image.file.name);
+     }
    }
 
     return this.http.post("https://localhost:5001/image", fd,

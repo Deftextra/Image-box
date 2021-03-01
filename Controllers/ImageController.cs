@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Image_box.Models.ImageProcessing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Image_box.Controllers
@@ -12,10 +15,13 @@ namespace Image_box.Controllers
     public class ImageController : ControllerBase
     {
         private readonly ILogger<ImageController> _logger;
+        private readonly IConfiguration _config;
+        
 
-        public ImageController(ILogger<ImageController> logger)
+        public ImageController(ILogger<ImageController> logger, IConfiguration config)
         {
             _logger = logger;
+            _config = config;
         }
 
         [HttpGet]
@@ -27,14 +33,26 @@ namespace Image_box.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(List<IFormFile> images)
         {
-            foreach (var file in images)
+            // TODO: Create Batch Processor class.
+            var compressedFileSizes = new List<int>();
+            try
             {
-                var fileStorage = new ImageFileSystemStore("./");
+                foreach (var file in images)
+                {
+                    var fileStorage = new ImageFileSystemStore(
+                        _config["ImageProcessor:OutPutFolder"],
+                    _config.GetValue<int>("ImageProcessor:MaxFileSize"));
 
-                await ImageProcessor.CompressAndStore(file, fileStorage);
-
+                   compressedFileSizes.Add(await ImageProcessor.CompressAndStore(file, fileStorage));
+                }
             }
-            return StatusCode(StatusCodes.Status202Accepted);
+            catch(Exception e)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            return Ok(compressedFileSizes);
+
         }
     }
 

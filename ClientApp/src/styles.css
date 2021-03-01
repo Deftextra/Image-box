@@ -1,6 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 
 /* Provide sufficient contrast against white background */
+
+
+@import '~bootstrap/dist/css/bootstrap.min.css';
+@import '~font-awesome/css/font-awesome.css';
+
+
+body {
+  font-family: Helvetica,Arial,sans-serif;
+}
+
 a {
   color: #0366d6;
 }

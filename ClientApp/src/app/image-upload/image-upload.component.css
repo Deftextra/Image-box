@@ -1,0 +1,94 @@
+.dropzone {
+    border: dashed 1px #979797;
+    padding: 2rem;
+    margin-bottom: 1rem;
+}
+
+.fileover {
+  animation: shake 1s;
+  animation-iteration-count: infinite;
+}
+
+.filesPasted {
+  animation: shake 2s;
+}
+
+button {
+    margin-left: 1em;
+}
+
+.single-file {
+    margin-left: 0;
+    margin-right: 0;
+    justify-content: space-between;
+    border: dashed 1px #979797;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+}
+
+.fa.fa-trash-o:hover {
+    cursor: pointer;
+}
+
+
+@media only screen and  (min-width: 720px) {
+
+    .delete-icon {
+        padding-top: 3.7rem;
+    }
+    .file-image {
+        padding-top: 1.7rem;
+    }
+    
+    .fa.fa-file-image-o {
+        transform: scale(1.1,1.2);
+    }
+}
+
+
+/* Shake animation */
+@keyframes shake {
+  0% {
+    transform: translate(1px, 1px) rotate(0deg);
+  }
+
+  10% {
+    transform: translate(-1px, -2px) rotate(-1deg);
+  }
+
+  20% {
+    transform: translate(-3px, 0px) rotate(1deg);
+  }
+
+  30% {
+    transform: translate(3px, 2px) rotate(0deg);
+  }
+
+  40% {
+    transform: translate(1px, -1px) rotate(1deg);
+  }
+
+  50% {
+    transform: translate(-1px, 2px) rotate(-1deg);
+  }
+
+  60% {
+    transform: translate(-3px, 1px) rotate(0deg);
+  }
+
+  70% {
+    transform: translate(3px, 1px) rotate(-1deg);
+  }
+
+  80% {
+    transform: translate(-1px, -1px) rotate(1deg);
+  }
+
+  90% {
+    transform: translate(1px, 2px) rotate(0deg);
+  }
+
+  100% {
+    transform: translate(1px, -2px) rotate(-1deg);
+  }
+}

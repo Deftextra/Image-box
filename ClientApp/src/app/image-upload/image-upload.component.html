@@ -1,0 +1,45 @@
+<div class="dropzone" (fileDropped)="onFileDropped($event)"
+    (imageFilesPasted)="onImageFilesPasted($event)"
+ appDnd appCnp>
+    <div class="text-center mb-4">
+        <i class="fa fa-upload" style="font-size: 8rem;"></i>
+    </div>
+    <div class="text-center mb-4">
+        <h3> Drop or paste your image file here!</h3>
+        <h3> or </h3>
+    </div>
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-4 custom-file">
+            <label class="custom-file-label rounded-pill" for="images"> Select image file</label>
+            <input class="custom-file-input" type="file" name="images" id="images"
+                (change)="onFileSelected($event.target.files)" multiple>
+        </div>
+        <button class=" col-md-2 btn btn-secondary rounded-pill" (click)="onUpload()">Upload</button>
+    </div>
+    <div class="row justify-content-center">
+    </div>
+</div>
+<div class="files-list">
+    <div class="single-file row" *ngFor="let uploadFile of selectedFiles; let i = index">
+        <div class=" file-image text-center col-md-1">
+            <i class="fa fa-file-image-o" style="font-size: 3rem;"></i>
+        </div>
+        <div class="info col-md-10 pr-0">
+            <h4 class="name">
+                {{ uploadFile.file.name }}
+            </h4>
+            <p class="size">
+                {{ formatBytes(uploadFile.file.size)}}
+            </p>
+            <ngb-progressbar [value]="uploadFile.uploadProgress" 
+            [showValue]="!uploadFile.isUploaded"
+            > 
+                {{ uploadFile.isUploaded ? "Completed!" : ""}}
+            </ngb-progressbar>
+        </div>
+        <div class="text-center delete-icon col-md-1 px-0">
+            <i  class="fa fa-trash-o" style="font-size: 2.5rem;"
+            (click)="onDeleteSelectedFile(i)"></i>
+        </div>
+    </div>
+</div>

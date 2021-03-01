@@ -10,6 +10,8 @@ namespace Image_box
 {
     public class Startup
     {
+        
+        readonly string AllowedOrigins = "_allowedOrgins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,6 +28,16 @@ namespace Image_box
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+            
+        services.AddCors(options =>
+        {
+            options.AddPolicy(name: AllowedOrigins,
+                              builder =>
+                              {
+                                  builder.WithOrigins("http://localhost:4200",
+                                                      "https://localhost:4200");
+                              });
+        });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -48,9 +60,8 @@ namespace Image_box
             {
                 app.UseSpaStaticFiles();
             }
-
             app.UseRouting();
-
+            app.UseCors(AllowedOrigins);
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

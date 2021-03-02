@@ -1,8 +1,10 @@
 
 export class FileUpload {
+    public index: number;
     public file: File;
     public isUploaded: boolean;
     public uploadProgress: number;
+    public progressMessage: string;
     constructor(
         file: File,
         isUploaded: boolean = false,

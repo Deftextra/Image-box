@@ -10,6 +10,7 @@ import { ImageUploadComponent } from './image-upload/image-upload.component';
 import { DndDirective } from './directives/dnd.directive';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CnpDirective } from './directives/cnp.directive';
+import { ImageFileComponent } from "./image-upload/image-file/image-file.component";
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { CnpDirective } from './directives/cnp.directive';
     ImageUploadComponent,
     DndDirective,
     CnpDirective,
+    ImageFileComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),

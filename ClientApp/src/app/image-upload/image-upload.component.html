@@ -21,6 +21,7 @@
 </div>
 <div class="files-list">
     <div class="single-file row" *ngFor="let uploadFile of selectedFiles; let i = index">
+    <!-- <app-image-file class="single-file row" [uploadFile]="uploadFile"></app-image-file> -->
         <div class=" file-image text-center col-md-1">
             <i class="fa fa-file-image-o" style="font-size: 3rem;"></i>
         </div>
@@ -34,7 +35,7 @@
             <ngb-progressbar [value]="uploadFile.uploadProgress" 
             [showValue]="!uploadFile.isUploaded"
             > 
-                {{ uploadMessage }}
+                {{ uploadFile.progressMessage }}
             </ngb-progressbar>
         </div>
         <div class="text-center delete-icon col-md-1 px-0">

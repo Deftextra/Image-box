@@ -1,0 +1,20 @@
+<div class=" file-image text-center col-md-1">
+    <i class="fa fa-file-image-o" style="font-size: 3rem;"></i>
+</div>
+<div class="info col-md-10 pr-0">
+    <h4 class="name">
+        {{ uploadFile.file.name }}
+    </h4>
+    <p class="size">
+        {{ formatBytes(uploadFile.file.size)}}
+    </p>
+    <ngb-progressbar [value]="uploadFile.uploadProgress" 
+    [showValue]="!uploadFile.isUploaded"
+    > 
+        {{ uploadMessage }}
+    </ngb-progressbar>
+</div>
+<div class="text-center delete-icon col-md-1 px-0">
+    <i  class="fa fa-trash-o" style="font-size: 2.5rem;"
+    (click)="deleteSelectedFile()"></i>
+</div>

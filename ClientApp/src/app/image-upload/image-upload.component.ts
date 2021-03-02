@@ -21,7 +21,7 @@ export class ImageUploadComponent implements OnInit {
   uploadMessage: string
 
   public onFileSelected(files: FileList) {
-    console.log(files);
+    
     this.addFiles(files);
   }
 
@@ -40,7 +40,6 @@ export class ImageUploadComponent implements OnInit {
 
   public onUpload() {
 
-
     this.imageDataService.upload(this.selectedFiles)
     .subscribe((event) => {
       if (event.type === HttpEventType.UploadProgress) {
@@ -48,14 +47,20 @@ export class ImageUploadComponent implements OnInit {
 
         for (const image of this.selectedFiles) {
           if (image.uploadProgress ==  100) {
-            this.setFilesAsUpload();
-            this.uploadMessage = "Compressing file!"
+            if (!image.isUploaded) {
+              image.progressMessage = "Compressing image!";
+            }
+            image.isUploaded = true;
           }
         }
 
       } else if (event.type === HttpEventType.Response) {
-        // Image succefully created (API returned)
-        this.uploadMessage = "Compeleted!"
+        for (var image of this.selectedFiles) {
+          // TODO: Set to compeled only for the id of the requested Upload images.
+          if (image.isUploaded) {
+            image.progressMessage = "Completed";
+          }
+        }
       }
     });
   }
@@ -78,7 +83,10 @@ export class ImageUploadComponent implements OnInit {
   //----------- TODO: Create UploadFiles class ---------------
   private setFilesAsUpload() {
     for (let file of this.selectedFiles) {
-      file.isUploaded = true;
+      if (!file.isUploaded)
+      {
+        file.isUploaded = true;
+      }
     }
   }
 
@@ -86,13 +94,22 @@ export class ImageUploadComponent implements OnInit {
     for (let index = 0; index < files.length; index++) {
       this.selectedFiles.push(new FileUpload(files[index]));
     }
+    console.log(this.selectedFiles);
   }
 
   private setFilesUploadProgress(uploadProgress: number) {
     for (var file of this.selectedFiles) {
       file.uploadProgress = uploadProgress;
     }
+  }
 
+  private setFilesUploadProgressMessage(message: string) {
+    for (var file of this.selectedFiles) {
+      if (!file.isUploaded)
+      {
+        file.progressMessage = message;
+      }
+    }
   }
   //--------------------------------------------------------------
 }

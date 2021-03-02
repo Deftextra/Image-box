@@ -14,13 +14,20 @@ namespace Image_box.Models.ImageProcessing
     {
         public static bool IsSupportedFileExtension(string fileName)
         {
-            var ext = Path.GetExtension(fileName);
+
+
+            var ext = Path.GetExtension(fileName)
+                .Substring(1);
+
+            var x = MagickNET.SupportedFormats
+                .Any(info => info.Format.ToString() == ext);
+            
+
 
             return !string.IsNullOrEmpty(ext) &&
                    MagickNET.SupportedFormats
-                       .Any(format => format.IsReadable &&
-                                      format.Format.ToString()
-                                          .Equals(ext, StringComparison.OrdinalIgnoreCase));
+                       .Any(format => format.IsReadable && 
+                                      format.Format.ToString().Equals(ext, StringComparison.OrdinalIgnoreCase));
         }
 
         public static async Task<int> CompressAndStore(IFormFile imageFile, IIMageStore storage)

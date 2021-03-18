@@ -14,8 +14,6 @@ namespace Image_box.Models.ImageProcessing
     {
         public static bool IsSupportedFileExtension(string fileName)
         {
-
-
             var ext = Path.GetExtension(fileName)
                 .Substring(1);
 

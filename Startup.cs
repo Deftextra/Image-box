@@ -1,3 +1,4 @@
+using Image_box.Models.SecureAttachmentsDownload.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
@@ -34,6 +35,8 @@ namespace Image_box
                             "https://localhost:4200");
                     });
             });
+            services.AddMemoryCache();
+            services.AddSingleton<ISecureUrlGenerator, SecureUrlGenerator>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

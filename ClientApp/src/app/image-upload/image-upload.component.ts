@@ -1,7 +1,8 @@
-import { TranslationWidth } from '@angular/common';
-import { HttpClient, HttpEventType } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-import { FileUpload } from '../models/file-upload';
+import { HttpEventType } from '@angular/common/http';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { fromEvent, Observable } from 'rxjs';
+import { mapTo } from 'rxjs/operators';
+import { ImageUpload } from '../models/file-upload';
 import { ImageDataService } from '../services/image-data.service';
 
 @Component({
@@ -13,15 +14,25 @@ export class ImageUploadComponent implements OnInit {
 
   constructor(private imageDataService: ImageDataService) { }
 
+  @ViewChild('button', {
+    static: true
+  })
+  button: HTMLElement;
+
   ngOnInit() {
+    this.uploadClicks = fromEvent<MouseEvent>(this.button, 'clicks')
+    .pipe(
+      mapTo(this.imageDataService.upload(this.selectedFiles)),
+
+    )
   }
 
-  selectedFiles: FileUpload[] = [];
+  uploadClicks: Observable<any>;
+  selectedFiles: ImageUpload[] = [];
   imageFilesPasted: boolean = false;
-  uploadMessage: string
+  uploadMessage: string;
 
   public onFileSelected(files: FileList) {
-    
     this.addFiles(files);
   }
 
@@ -31,20 +42,17 @@ export class ImageUploadComponent implements OnInit {
 
   public onImageFilesPasted(imageFiles: File[]) {
     for (const image of imageFiles) {
-      this.selectedFiles.push(new FileUpload(image))
+      this.selectedFiles.push(new ImageUpload(image))
     }
 
     this.imageFilesPasted = false;
-    
   }
 
   public onUpload() {
-
     this.imageDataService.upload(this.selectedFiles)
     .subscribe((event) => {
       if (event.type === HttpEventType.UploadProgress) {
         this.setFilesUploadProgress(Math.round(event.loaded/event.total*100));
-
         for (const image of this.selectedFiles) {
           if (image.uploadProgress ==  100) {
             if (!image.isUploaded) {
@@ -53,7 +61,6 @@ export class ImageUploadComponent implements OnInit {
             image.isUploaded = true;
           }
         }
-
       } else if (event.type === HttpEventType.Response) {
         for (var image of this.selectedFiles) {
           // TODO: Set to compeled only for the id of the requested Upload images.
@@ -92,7 +99,7 @@ export class ImageUploadComponent implements OnInit {
 
   private addFiles(files: FileList) {
     for (let index = 0; index < files.length; index++) {
-      this.selectedFiles.push(new FileUpload(files[index]));
+      this.selectedFiles.push(new ImageUpload(files[index]));
     }
     console.log(this.selectedFiles);
   }
